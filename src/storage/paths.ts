@@ -3,6 +3,7 @@ import { join, resolve } from 'node:path';
 export const HANDOFF_DIR_NAME = '.handoff';
 export const CONFIG_FILE_NAME = 'config.json';
 export const PROJECT_FILE_NAME = 'project.json';
+export const REPOSITORY_FILE_NAME = 'repository.json';
 
 export interface HandoffPaths {
   /** Absolute path of the project root. */
@@ -13,6 +14,8 @@ export interface HandoffPaths {
   config: string;
   /** Absolute path of `<root>/.handoff/project.json`. */
   project: string;
+  /** Absolute path of `<root>/.handoff/repository.json`. */
+  repository: string;
 }
 
 export function getHandoffPaths(rootDir: string): HandoffPaths {
@@ -24,5 +27,6 @@ export function getHandoffPaths(rootDir: string): HandoffPaths {
     dir,
     config: join(dir, CONFIG_FILE_NAME),
     project: join(dir, PROJECT_FILE_NAME),
+    repository: join(dir, REPOSITORY_FILE_NAME),
   };
 }

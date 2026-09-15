@@ -7,7 +7,7 @@ import {
 import { isSameTechnology } from '../core/technology.js';
 import { readJsonFile, writeJsonFile } from './fs.js';
 import { getHandoffPaths } from './paths.js';
-import { isInitialized } from './project-root.js';
+import { assertInitialized } from './project-root.js';
 
 export type SaveStatus = 'created' | 'updated' | 'unchanged';
 
@@ -21,10 +21,8 @@ export interface SaveProjectResult {
  * set up yet, and throws if Handoff is not initialized or the file is invalid.
  */
 export async function readProject(rootDir: string): Promise<ProjectIdentity | undefined> {
+  await assertInitialized(rootDir);
   const paths = getHandoffPaths(rootDir);
-  if (!(await isInitialized(rootDir))) {
-    throw new Error(`Handoff is not initialized in ${paths.root}. Run "wf9 init" first.`);
-  }
 
   const data = await readJsonFile(paths.project);
   if (data === undefined) return undefined;

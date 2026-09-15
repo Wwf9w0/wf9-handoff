@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and the 
 - `wf9 scan`: deterministic technology detection (language, runtime, package manager,
   framework, test framework) from `package.json`, `pom.xml`, `pubspec.yaml`, `Cargo.toml` and
   `go.mod`, stored under `technology` in `project.json`; `wf9 project setup` runs it too
+- `wf9 repo`: captures the Git branch, HEAD, recent commits and staged, modified, deleted,
+  renamed, untracked and conflicted files in `.handoff/repository.json`, read-only
 - Initial project documentation
 - Contributor and governance documentation
 - GitHub issue and pull request templates
