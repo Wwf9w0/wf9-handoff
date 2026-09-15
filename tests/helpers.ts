@@ -1,6 +1,6 @@
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 import { type Command, CommanderError, type OutputConfiguration } from 'commander';
 import { afterEach, beforeEach, vi } from 'vitest';
@@ -66,6 +66,17 @@ export function useTempDir(): () => string {
   });
 
   return () => dir;
+}
+
+/** Writes `{ "relative/path": "content" }` entries under `dir`, creating folders as needed. */
+export async function writeFiles(dir: string, files: Record<string, string>): Promise<void> {
+  await Promise.all(
+    Object.entries(files).map(async ([name, content]) => {
+      const file = join(dir, name);
+      await mkdir(dirname(file), { recursive: true });
+      await writeFile(file, content);
+    }),
+  );
 }
 
 /** Like useTempDir, but also makes the directory the CLI's `process.cwd()`. */

@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { runCli, useTempCwd } from '../helpers.js';
+import { runCli, useTempCwd, writeFiles } from '../helpers.js';
 
 const NAME = 'handoff';
 const DESCRIPTION = 'Cross-agent project continuity tool';
@@ -49,7 +49,7 @@ describe('wf9 project', () => {
       expect(result.stdout).toMatch(/^✓ project\.json created\n\nName: +handoff\n/);
       const project = await readProjectJson();
       expect(project).toMatchObject({
-        schemaVersion: '1.0',
+        schemaVersion: '1.1',
         name: NAME,
         description: DESCRIPTION,
         root: '.',
@@ -101,6 +101,18 @@ describe('wf9 project', () => {
       expect(existsSync(join(subDir, '.handoff'))).toBe(false);
     });
 
+    it('detects the technology stack', async () => {
+      await writeFiles(projectDir(), { 'go.mod': 'module example.com/app\n' });
+      await runCli(['init']);
+
+      const result = await runCli(['project', 'setup', '-n', NAME, '-d', DESCRIPTION]);
+
+      expect(result.stdout).toContain('Language:        go\n');
+      expect(await readProjectJson()).toMatchObject({
+        technology: { language: 'go', packageManager: 'go', framework: null },
+      });
+    });
+
     it('rejects an empty name', async () => {
       await runCli(['init']);
 
@@ -121,6 +133,42 @@ describe('wf9 project', () => {
       expect(result.stdout).toContain(`Name:        ${NAME}\n`);
       expect(result.stdout).toContain(`Description: ${DESCRIPTION}\n`);
       expect(result.stdout).toContain('Root:        .\n');
+    });
+
+    it('prints the technology, with null as "none"', async () => {
+      await writeFiles(projectDir(), { 'Cargo.toml': '[package]\nname = "app"\n' });
+      await runCli(['init']);
+      await runCli(['project', 'setup', '-n', NAME, '-d', DESCRIPTION]);
+
+      const result = await runCli(['project', 'show']);
+
+      expect(result.stdout).toContain(
+        [
+          'Language:        rust',
+          'Runtime:         none',
+          'Package manager: cargo',
+          'Framework:       none',
+          'Test framework:  cargo-test',
+        ].join('\n'),
+      );
+    });
+
+    it('explains how to detect the technology of a 1.0 project.json', async () => {
+      await runCli(['init']);
+      await writeFiles(projectDir(), {
+        '.handoff/project.json': JSON.stringify({
+          schemaVersion: '1.0',
+          name: NAME,
+          description: DESCRIPTION,
+          root: '.',
+          createdAt: '2027-01-01T10:00:00.000Z',
+          updatedAt: '2027-01-01T10:00:00.000Z',
+        }),
+      });
+
+      const result = await runCli(['project', 'show']);
+
+      expect(result.stdout).toContain('Technology:  not detected yet. Run "wf9 scan".\n');
     });
 
     it('finds the project from a subdirectory', async () => {

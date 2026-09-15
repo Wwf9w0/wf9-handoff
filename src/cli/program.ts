@@ -2,6 +2,7 @@ import { Command } from 'commander';
 
 import { registerInitCommand } from './commands/init.js';
 import { registerProjectCommand } from './commands/project.js';
+import { registerScanCommand } from './commands/scan.js';
 import { readVersion } from './version.js';
 
 /**
@@ -16,6 +17,7 @@ export function createProgram(): Command {
 
   registerInitCommand(program);
   registerProjectCommand(program);
+  registerScanCommand(program);
 
   return program;
 }

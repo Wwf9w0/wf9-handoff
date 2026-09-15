@@ -28,16 +28,19 @@ The project focuses first on a reliable local project-state protocol, then on ag
 - [x] `project.json`
 - [x] commands work from any subdirectory of the project
 
-## Project State Foundation
-
 ### Phase 3 — Deterministic Technology Scanner
 
-- [ ] language detection
-- [ ] runtime detection
-- [ ] framework detection
-- [ ] package-manager detection
-- [ ] test-framework detection
-- [ ] unknown-state handling
+- [x] `wf9 scan`, also run by `wf9 project setup`
+- [x] language detection
+- [x] runtime detection
+- [x] framework detection
+- [x] package-manager detection
+- [x] test-framework detection
+- [x] unknown-state handling
+- [x] `package.json`, `pom.xml`, `pubspec.yaml`, `Cargo.toml`, `go.mod`
+- [ ] projects with several ecosystems side by side (reported as unknown for now)
+
+## Project State Foundation
 
 ### Phase 4 — Repository State
 

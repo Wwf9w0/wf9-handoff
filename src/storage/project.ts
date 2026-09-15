@@ -4,6 +4,7 @@ import {
   type ProjectIdentity,
   type ProjectInput,
 } from '../core/project.js';
+import { isSameTechnology } from '../core/technology.js';
 import { readJsonFile, writeJsonFile } from './fs.js';
 import { getHandoffPaths } from './paths.js';
 import { isInitialized } from './project-root.js';
@@ -45,7 +46,11 @@ export async function saveProject(
   const existing = await readProject(rootDir);
   const project = buildProject(input, now, existing);
 
-  if (existing?.name === project.name && existing.description === project.description) {
+  if (
+    existing?.name === project.name &&
+    existing.description === project.description &&
+    isSameTechnology(existing.technology, project.technology)
+  ) {
     return { project: existing, status: 'unchanged' };
   }
 

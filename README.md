@@ -10,8 +10,8 @@ reality.
 
 Everything runs locally. No backend, database, AI API, account or cloud.
 
-> **Status:** Phase 2. `init` and project identity work; no scanning, Git analysis or agent
-> adapters yet. See the [roadmap](ROADMAP.md).
+> **Status:** Phase 3. `init`, project identity and technology detection work; no Git analysis
+> or agent adapters yet. See the [roadmap](ROADMAP.md).
 
 ## Usage
 
@@ -20,8 +20,9 @@ The command is `wf9`. Run `init` in the root of the project you want to hand off
 ```sh
 cd ~/my-project
 wf9 init             # creates .handoff/config.json (safe to re-run)
-wf9 project setup    # asks for the project name and what it is for
+wf9 project setup    # asks for the project name and what it is for, detects the technology
 wf9 project show     # prints .handoff/project.json
+wf9 scan             # detects the technology again after the stack changed
 ```
 
 Like Git, every other command works from anywhere inside the project: it walks up from the
@@ -35,6 +36,29 @@ options instead; any option left out keeps its saved value:
 wf9 project setup --name my-project --description "Cross-agent project continuity tool"
 wf9 project setup --description "A sharper one-sentence purpose"
 ```
+
+### Technology detection
+
+`project setup` and `scan` read well-known files in the project root and store what they
+prove under `technology` in `.handoff/project.json`:
+
+```json
+{
+  "technology": {
+    "language": "typescript",
+    "runtime": "node",
+    "packageManager": "pnpm",
+    "framework": null,
+    "testFramework": "vitest"
+  }
+}
+```
+
+Nothing is guessed. `null` means the files show there is none (here: no framework);
+`"unknown"` means the files do not settle it, for example two lockfiles from different package
+managers. The scanner reads `package.json` (plus `tsconfig.json`, lockfiles and
+`pnpm-workspace.yaml`), `pom.xml`, `pubspec.yaml`, `Cargo.toml` and `go.mod`. A project with
+more than one of these side by side is reported as unknown for now.
 
 ## Installation
 

@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import type { Technology } from '../../src/core/technology.js';
 import { initHandoff } from '../../src/storage/init.js';
 import { readProject, saveProject } from '../../src/storage/project.js';
 import { useTempDir } from '../helpers.js';
@@ -10,6 +11,13 @@ import { useTempDir } from '../helpers.js';
 const NOW = new Date('2027-01-01T10:00:00Z');
 const LATER = new Date('2027-02-01T10:00:00Z');
 const INPUT = { name: 'handoff', description: 'Cross-agent project continuity tool' };
+const TECHNOLOGY: Technology = {
+  language: 'typescript',
+  runtime: 'node',
+  packageManager: 'pnpm',
+  framework: null,
+  testFramework: 'vitest',
+};
 
 describe('project storage', () => {
   const projectDir = useTempDir();
@@ -37,7 +45,7 @@ describe('project storage', () => {
       expect(result.status).toBe('created');
       expect(await readProject(projectDir())).toEqual(result.project);
       expect(JSON.parse(await readFile(projectPath(), 'utf8')) as unknown).toEqual({
-        schemaVersion: '1.0',
+        schemaVersion: '1.1',
         ...INPUT,
         root: '.',
         createdAt: NOW.toISOString(),
@@ -65,6 +73,35 @@ describe('project storage', () => {
 
       expect(result.status).toBe('unchanged');
       expect((await readProject(projectDir()))?.updatedAt).toBe(NOW.toISOString());
+    });
+
+    it('saves technology and keeps it when only the identity changes', async () => {
+      await saveProject(projectDir(), { ...INPUT, technology: TECHNOLOGY }, NOW);
+
+      await saveProject(projectDir(), { ...INPUT, description: 'New' }, LATER);
+
+      expect((await readProject(projectDir()))?.technology).toEqual(TECHNOLOGY);
+    });
+
+    it('updates when only the technology changed', async () => {
+      await saveProject(projectDir(), { ...INPUT, technology: TECHNOLOGY }, NOW);
+
+      const result = await saveProject(
+        projectDir(),
+        { ...INPUT, technology: { ...TECHNOLOGY, framework: 'express' } },
+        LATER,
+      );
+
+      expect(result.status).toBe('updated');
+      expect((await readProject(projectDir()))?.technology?.framework).toBe('express');
+    });
+
+    it('does not touch the file when the same technology is saved again', async () => {
+      await saveProject(projectDir(), { ...INPUT, technology: TECHNOLOGY }, NOW);
+
+      const result = await saveProject(projectDir(), { ...INPUT, technology: TECHNOLOGY }, LATER);
+
+      expect(result.status).toBe('unchanged');
     });
 
     it('leaves no temporary files behind', async () => {

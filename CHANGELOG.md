@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and the 
 - `wf9 init`: local `.handoff/` project initialization, safe to re-run
 - `wf9 project setup` and `wf9 project show`: project identity stored in `.handoff/project.json`
 - Commands resolve the project from any subdirectory by walking up to the nearest `.handoff/`
+- `wf9 scan`: deterministic technology detection (language, runtime, package manager,
+  framework, test framework) from `package.json`, `pom.xml`, `pubspec.yaml`, `Cargo.toml` and
+  `go.mod`, stored under `technology` in `project.json`; `wf9 project setup` runs it too
 - Initial project documentation
 - Contributor and governance documentation
 - GitHub issue and pull request templates
@@ -20,6 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and the 
 
 - Technical documentation index moved to `docs/README.md`; the root `README.md` is now the
   project introduction
+- `project.json` schema version 1.1 adds the optional `technology` field; 1.0 files are still
+  read
 
 ### Fixed
 

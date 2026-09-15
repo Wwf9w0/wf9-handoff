@@ -24,6 +24,7 @@ describe('wf9 CLI', () => {
     expect(result.stdout).toContain('Switch AI agents without restarting the work.');
     expect(result.stdout).toContain('init');
     expect(result.stdout).toContain('project');
+    expect(result.stdout).toContain('scan');
   });
 
   it('prints help and fails when run without a command', async () => {

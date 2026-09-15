@@ -3,9 +3,11 @@ import { basename } from 'node:path';
 import type { Command } from 'commander';
 
 import type { ProjectIdentity, ProjectInput } from '../../core/project.js';
+import { scanTechnology } from '../../scanner/technology.js';
 import { PROJECT_FILE_NAME } from '../../storage/paths.js';
 import { requireProjectRoot } from '../../storage/project-root.js';
 import { readProject, saveProject, type SaveStatus } from '../../storage/project.js';
+import { formatTechnology } from '../format.js';
 import { createPrompter } from '../prompt.js';
 
 interface SetupOptions {
@@ -24,14 +26,15 @@ export function registerProjectCommand(program: Command): void {
 
   project
     .command('setup')
-    .description('set the project name and description')
+    .description('set the project name and description, and detect the technology stack')
     .option('-n, --name <name>', 'project name')
     .option('-d, --description <text>', 'what the project is for, in one sentence')
     .action(async (options: SetupOptions) => {
       const root = await requireProjectRoot(process.cwd());
       const existing = await readProject(root);
       const input = await collectInput(options, existing, basename(root));
-      const result = await saveProject(root, input);
+      const { technology } = await scanTechnology(root);
+      const result = await saveProject(root, { ...input, technology });
 
       console.log(`${STATUS_MESSAGES[result.status]}\n\n${formatProject(result.project)}`);
     });
@@ -90,11 +93,16 @@ async function collectInput(
 }
 
 function formatProject(project: ProjectIdentity): string {
-  return [
+  const identity = [
     `Name:        ${project.name}`,
     `Description: ${project.description}`,
     `Root:        ${project.root}`,
     `Created:     ${project.createdAt}`,
     `Updated:     ${project.updatedAt}`,
   ].join('\n');
+  const technology = project.technology
+    ? formatTechnology(project.technology)
+    : 'Technology:  not detected yet. Run "wf9 scan".';
+
+  return `${identity}\n\n${technology}`;
 }
