@@ -10,8 +10,8 @@ reality.
 
 Everything runs locally. No backend, database, AI API, account or cloud.
 
-> **Status:** Phase 3. `init`, project identity and technology detection work; no Git analysis
-> or agent adapters yet. See the [roadmap](ROADMAP.md).
+> **Status:** Phase 4. `init`, project identity, technology detection and repository state work;
+> no decisions, tasks or agent adapters yet. See the [roadmap](ROADMAP.md).
 
 ## Usage
 
@@ -23,6 +23,7 @@ wf9 init             # creates .handoff/config.json (safe to re-run)
 wf9 project setup    # asks for the project name and what it is for, detects the technology
 wf9 project show     # prints .handoff/project.json
 wf9 scan             # detects the technology again after the stack changed
+wf9 repo             # captures the Git state in .handoff/repository.json
 ```
 
 Like Git, every other command works from anywhere inside the project: it walks up from the
@@ -59,6 +60,17 @@ Nothing is guessed. `null` means the files show there is none (here: no framewor
 managers. The scanner reads `package.json` (plus `tsconfig.json`, lockfiles and
 `pnpm-workspace.yaml`), `pom.xml`, `pubspec.yaml`, `Cargo.toml` and `go.mod`. A project with
 more than one of these side by side is reported as unknown for now.
+
+### Repository state
+
+`wf9 repo` asks Git for the current branch, HEAD, the ten most recent commits and every
+uncommitted change (staged, modified, deleted, renamed, untracked and conflicted files), and
+writes it to `.handoff/repository.json` with the time it was captured.
+
+The repository is the source of truth. `repository.json` is only ever written from Git's own
+output, and each run replaces the whole file, so if an agent's claim about the code contradicts
+it, the repository wins. Inspecting is read-only: Git runs without a shell and with
+`--no-optional-locks`, so not even the index is touched.
 
 ## Installation
 

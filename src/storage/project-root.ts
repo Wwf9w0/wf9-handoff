@@ -1,17 +1,19 @@
-import { stat } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
-import { hasErrorCode } from './fs.js';
+import { isFile } from './fs.js';
 import { getHandoffPaths } from './paths.js';
 
 /** A directory is a Handoff project once `.handoff/config.json` exists in it. */
 export async function isInitialized(dir: string): Promise<boolean> {
-  try {
-    return (await stat(getHandoffPaths(dir).config)).isFile();
-  } catch (error) {
-    // ENOTDIR: `.handoff` exists but is a file.
-    if (hasErrorCode(error, 'ENOENT') || hasErrorCode(error, 'ENOTDIR')) return false;
-    throw error;
+  return isFile(getHandoffPaths(dir).config);
+}
+
+/** Fails unless `dir` itself is initialized, for storage functions given a project root. */
+export async function assertInitialized(dir: string): Promise<void> {
+  if (!(await isInitialized(dir))) {
+    throw new Error(
+      `Handoff is not initialized in ${getHandoffPaths(dir).root}. Run "wf9 init" first.`,
+    );
   }
 }
 

@@ -40,17 +40,20 @@ The project focuses first on a reliable local project-state protocol, then on ag
 - [x] `package.json`, `pom.xml`, `pubspec.yaml`, `Cargo.toml`, `go.mod`
 - [ ] projects with several ecosystems side by side (reported as unknown for now)
 
-## Project State Foundation
-
 ### Phase 4 — Repository State
 
-- [ ] current branch
-- [ ] HEAD commit
-- [ ] recent commits
-- [ ] modified files
-- [ ] staged files
-- [ ] untracked files
-- [ ] deleted and renamed files
+- [x] `wf9 repo` and `.handoff/repository.json`
+- [x] current branch
+- [x] HEAD commit
+- [x] recent commits
+- [x] modified files
+- [x] staged files
+- [x] untracked files
+- [x] deleted and renamed files
+- [x] conflicted files
+- [x] read-only Git inspection
+
+## Project State Foundation
 
 ### Phase 5 — Relevant Files Registry
 

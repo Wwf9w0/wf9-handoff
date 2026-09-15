@@ -25,6 +25,7 @@ describe('wf9 CLI', () => {
     expect(result.stdout).toContain('init');
     expect(result.stdout).toContain('project');
     expect(result.stdout).toContain('scan');
+    expect(result.stdout).toContain('repo');
   });
 
   it('prints help and fails when run without a command', async () => {

@@ -1,7 +1,7 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { hasErrorCode } from '../storage/fs.js';
+import { hasErrorCode, isFile } from '../storage/fs.js';
 
 /** Reads a file in the project root, or returns `undefined` if there is none. */
 export async function readProjectFile(root: string, name: string): Promise<string | undefined> {
@@ -20,13 +20,4 @@ export async function findProjectFiles(root: string, names: readonly string[]): 
     names.map(async (name) => ((await isFile(join(root, name))) ? name : undefined)),
   );
   return found.filter((name) => name !== undefined);
-}
-
-async function isFile(path: string): Promise<boolean> {
-  try {
-    return (await stat(path)).isFile();
-  } catch (error) {
-    if (hasErrorCode(error, 'ENOENT')) return false;
-    throw error;
-  }
 }
