@@ -8,14 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and the 
 
 ### Added
 
-- TypeScript CLI foundation
-- Local `.handoff` project initialization
+- TypeScript CLI foundation (`wf9 --version`, `wf9 --help`)
+- `wf9 init`: local `.handoff/` project initialization, safe to re-run
+- `wf9 project setup` and `wf9 project show`: project identity stored in `.handoff/project.json`
+- Commands resolve the project from any subdirectory by walking up to the nearest `.handoff/`
 - Initial project documentation
 - Contributor and governance documentation
+- GitHub issue and pull request templates
 
 ### Changed
 
-- Nothing yet
+- Technical documentation index moved to `docs/README.md`; the root `README.md` is now the
+  project introduction
 
 ### Fixed
 
@@ -44,9 +48,11 @@ Example:
 ## [0.2.0] - 2027-01-10
 
 ### Added
+
 - Project identity commands
 - Deterministic technology scanner
 
 ### Fixed
+
 - Windows path normalization during initialization
 ```

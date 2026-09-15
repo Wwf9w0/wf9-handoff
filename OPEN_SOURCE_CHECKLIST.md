@@ -24,22 +24,20 @@ This checklist tracks repository-level project hygiene for WF9 Handoff.
 - [x] Question template
 - [x] Issue-template configuration
 
-## Non-Markdown Files Still Recommended
+## Non-Markdown Files
 
-These are intentionally not included in this Markdown package:
-
-- `LICENSE`
-- `.gitignore`
-- `.editorconfig`
-- package-manager lockfile
-- CI workflow under `.github/workflows/`
-- optional `CITATION.cff`
-- optional `CODEOWNERS`
-- optional Dependabot configuration
+- [ ] `LICENSE`
+- [x] `.gitignore`
+- [ ] `.editorconfig`
+- [x] package-manager lockfile (`pnpm-lock.yaml`)
+- [ ] CI workflow under `.github/workflows/`
+- [ ] optional `CITATION.cff`
+- [ ] optional `CODEOWNERS`
+- [ ] optional Dependabot configuration
 
 ## Before Public Release
 
-- [ ] Replace placeholder GitHub repository URLs
+- [x] Replace placeholder GitHub repository URLs
 - [ ] Select and add final license
 - [ ] Enable private vulnerability reporting
 - [ ] Add CI

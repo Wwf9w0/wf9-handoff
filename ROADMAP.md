@@ -14,19 +14,21 @@ The project focuses first on a reliable local project-state protocol, then on ag
 
 ### Phase 1 — Project Initialization
 
-- [x] `handoff init`
+- [x] `wf9 init`
 - [x] `.handoff/` directory
 - [x] local configuration
 - [x] safe re-initialization behavior
 
-## Project State Foundation
-
 ### Phase 2 — Project Identity
 
-- [ ] `handoff project setup`
-- [ ] project name
-- [ ] project description
-- [ ] `project.json`
+- [x] `wf9 project setup`
+- [x] `wf9 project show`
+- [x] project name
+- [x] project description
+- [x] `project.json`
+- [x] commands work from any subdirectory of the project
+
+## Project State Foundation
 
 ### Phase 3 — Deterministic Technology Scanner
 
@@ -147,8 +149,8 @@ The project focuses first on a reliable local project-state protocol, then on ag
 
 ### Phase 20 — Seamless Switching
 
-- [ ] `handoff switch codex`
-- [ ] `handoff switch claude`
+- [ ] `wf9 switch codex`
+- [ ] `wf9 switch claude`
 - [ ] automatic state refresh before launch
 
 ## Extended Capabilities
@@ -187,7 +189,7 @@ The project focuses first on a reliable local project-state protocol, then on ag
 
 ### Project Health
 
-- [ ] `handoff doctor`
+- [ ] `wf9 doctor`
 - [ ] continuity health report
 
 ## Future

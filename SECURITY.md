@@ -8,11 +8,11 @@ WF9 Handoff is currently in early development.
 
 Until the first stable release, security fixes will generally target the latest development version.
 
-| Version | Supported |
-|---|---|
-| Latest development release | Yes |
+| Version                    | Supported   |
+| -------------------------- | ----------- |
+| Latest development release | Yes         |
 | Older pre-release versions | Best effort |
-| Unreleased forks | No |
+| Unreleased forks           | No          |
 
 ## Reporting a Vulnerability
 

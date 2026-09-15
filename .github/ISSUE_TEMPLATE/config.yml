@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Wwf9w0/wf9-handoff/security/advisories/new
+    about: Report security issues privately. Do not open a public issue.
+  - name: WF9 Labs
+    url: https://wf9labs.com
+    about: Project website and maintainer contact.

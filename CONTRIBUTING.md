@@ -36,14 +36,14 @@ please open an issue or discussion first.
 
 Requirements:
 
-- Node.js
-- pnpm
+- Node.js >= 22.12
+- pnpm (`corepack enable pnpm`)
 - Git
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/wf9-handoff.git
+git clone https://github.com/Wwf9w0/wf9-handoff.git
 cd wf9-handoff
 ```
 
